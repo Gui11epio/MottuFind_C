@@ -3,13 +3,6 @@
 # Esta fase é usada durante a execução no VS no modo rápido (Padrão para a configuração de Depuração)
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 
-# Cria um usuário não-root
-ARG APP_UID=1000
-ARG APP_GID=1000
-RUN addgroup --gid $APP_GID appgroup \
-    && adduser --disabled-password --gecos "" --uid $APP_UID --gid $APP_GID appuser
-
-
 USER $APP_UID
 WORKDIR /app
 EXPOSE 8080
@@ -38,6 +31,4 @@ RUN dotnet publish "./MottuFind_C_.API.csproj" -c $BUILD_CONFIGURATION -o /app/p
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-# Troca para o novo usuário
-USER appuser
 ENTRYPOINT ["dotnet", "MottuFind_C_.API.dll"]
