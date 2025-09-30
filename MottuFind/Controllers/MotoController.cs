@@ -4,6 +4,7 @@ using Sprint1_C_.Application.DTOs.Requests;
 using Sprint1_C_.Application.DTOs.Response;
 using Sprint1_C_.Application.Services;
 using Sprint1_C_.Domain.Entities;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Sprint1_C_.Controllers
 {
@@ -21,6 +22,10 @@ namespace Sprint1_C_.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<MotoResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [SwaggerOperation(
+            Summary = "Obtém todas as motos",
+            Description = "Retorna uma lista de todas as motos cadastradas."
+        )]
         public async Task<IActionResult> GetAll()
         {
             var motos = await _motoService.ObterTodos();
@@ -32,6 +37,10 @@ namespace Sprint1_C_.Controllers
         [ProducesResponseType(typeof(Resource<MotoResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [SwaggerOperation(
+            Summary = "Obtém uma moto por placa",
+            Description = "Retorna os detalhes de uma moto específica com links HATEOAS para ações relacionadas."
+        )]
         public async Task<IActionResult> GetByPlaca([FromQuery] string valor)
         {
             var moto = await _motoService.ObterPorPlaca(valor);
@@ -57,6 +66,10 @@ namespace Sprint1_C_.Controllers
         [Produces("application/json")]
         [ProducesResponseType(typeof(Resource<PagedResult<MotoResponse>>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [SwaggerOperation(
+            Summary = "Obtém motos paginadas",
+            Description = "Retorna uma lista paginada de motos com links HATEOAS para navegação entre páginas."
+        )]
         public async Task<ActionResult<Resource<PagedResult<MotoResponse>>>> GetPaged(int numeroPag = 1, int tamanhoPag = 10)
         {
             var result = await _motoService.ObterPorPagina(numeroPag, tamanhoPag);
@@ -94,6 +107,10 @@ namespace Sprint1_C_.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(MotoResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [SwaggerOperation(
+            Summary = "Cria uma nova moto",
+            Description = "Adiciona uma nova moto ao sistema."
+        )]
         public async Task<IActionResult> Create([FromBody] MotoRequest request)
         {
             if (!ModelState.IsValid)
@@ -107,6 +124,10 @@ namespace Sprint1_C_.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [SwaggerOperation(
+            Summary = "Atualiza uma moto existente",
+            Description = "Atualiza os detalhes de uma moto específica."
+        )]
         public async Task<IActionResult> Update(string placa, [FromBody] MotoRequest request)
         {
             if (!ModelState.IsValid)
@@ -122,6 +143,10 @@ namespace Sprint1_C_.Controllers
         [HttpDelete("placa")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [SwaggerOperation(
+            Summary = "Remove uma moto",
+            Description = "Remove uma moto específica do sistema."
+        )]
         public async Task<IActionResult> Delete(string placa)
         {
             var removida = await _motoService.Remover(placa);

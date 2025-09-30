@@ -3,6 +3,7 @@ using MottuFind_C_.Domain.Entities;
 using Sprint1_C_.Application.DTOs.Requests;
 using Sprint1_C_.Application.DTOs.Response;
 using Sprint1_C_.Application.Services;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Sprint1_C_.Controllers
 {
@@ -20,6 +21,10 @@ namespace Sprint1_C_.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<FilialResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [SwaggerOperation(
+            Summary = "Obtém todas as filiais",
+            Description = "Retorna uma lista de todas as filiais cadastradas."
+        )]
         public async Task<IActionResult> GetAll()
         {
             var filiais = await _filialService.ObterTodos();
@@ -31,6 +36,10 @@ namespace Sprint1_C_.Controllers
         [ProducesResponseType(typeof(Resource<FilialResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [SwaggerOperation(
+            Summary = "Obtém uma filial por ID",
+            Description = "Retorna os detalhes de uma filial específica com links HATEOAS para ações relacionadas."
+        )]
         public async Task<IActionResult> GetById(int id)
         {
             var filial = await _filialService.ObterPorId(id);
@@ -57,6 +66,10 @@ namespace Sprint1_C_.Controllers
         [Produces("application/json")]
         [ProducesResponseType(typeof(Resource<PagedResult<FilialResponse>>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [SwaggerOperation(
+            Summary = "Obtém uma lista paginada de filiais",
+            Description = "Retorna uma lista paginada de filiais com links HATEOAS para navegação entre páginas."
+        )]
         public async Task<ActionResult<Resource<PagedResult<FilialResponse>>>> GetPaged(int numeroPag = 1, int tamanhoPag = 10)
         {
             var result = await _filialService.ObterPorPagina(numeroPag, tamanhoPag);
@@ -93,6 +106,10 @@ namespace Sprint1_C_.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(FilialResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [SwaggerOperation(
+            Summary = "Cria uma nova filial",
+            Description = "Adiciona uma nova filial ao sistema e retorna os detalhes da filial criada."
+        )]
         public async Task<IActionResult> Create([FromBody] FilialRequest request)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -105,6 +122,10 @@ namespace Sprint1_C_.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [SwaggerOperation(
+            Summary = "Atualiza uma filial existente",
+            Description = "Atualiza os detalhes de uma filial existente com base no ID fornecido."
+        )]
         public async Task<IActionResult> Update(int id, [FromBody] FilialRequest request)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -118,6 +139,10 @@ namespace Sprint1_C_.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [SwaggerOperation(
+            Summary = "Remove uma filial",
+            Description = "Remove uma filial existente com base no ID fornecido."
+        )]
         public async Task<IActionResult> Delete(int id)
         {
             var deleted = await _filialService.Remover(id);

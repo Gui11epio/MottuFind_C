@@ -20,7 +20,9 @@ namespace Sprint1_C_
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(o =>
+                o.EnableAnnotations()
+            );
 
 
 

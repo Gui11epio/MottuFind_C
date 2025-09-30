@@ -3,6 +3,7 @@ using MottuFind_C_.Application.Services;
 using Sprint1_C_.Application.DTOs.Requests;
 using Sprint1_C_.Application.DTOs.Response;
 using Sprint1_C_.Application.Services;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace MottuFind.Controllers
 {
@@ -20,6 +21,10 @@ namespace MottuFind.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<LeituraRfidResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [SwaggerOperation(
+            Summary = "Obtém todas as leituras RFID",
+            Description = "Retorna uma lista de todas as leituras RFID cadastradas."
+        )]
         public async Task<IActionResult> GetAll()
         {
             var leituras = await _leituraService.ObterTodos();
@@ -31,6 +36,10 @@ namespace MottuFind.Controllers
         [ProducesResponseType(typeof(LeituraRfidResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [SwaggerOperation(
+            Summary = "Obtém uma leitura RFID por ID",
+            Description = "Retorna os detalhes de uma leitura RFID específica."
+        )]
         public async Task<IActionResult> GetById(int id)
         {
             var leitura = await _leituraService.ObterPorId(id);
@@ -41,6 +50,10 @@ namespace MottuFind.Controllers
         [HttpGet("pagina")]
         [ProducesResponseType(typeof(PagedResult<LeituraRfidResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [SwaggerOperation(
+            Summary = "Obtém leituras RFID paginadas",
+            Description = "Retorna uma lista paginada de leituras RFID."
+        )]
         public async Task<ActionResult<PagedResult<LeituraRfidResponse>>> GetPaged(int numeroPag = 1, int tamanhoPag = 10)
         {
             var result = await _leituraService.ObterPorPagina(numeroPag, tamanhoPag);
@@ -50,6 +63,10 @@ namespace MottuFind.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(LeituraRfidResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [SwaggerOperation(
+            Summary = "Cria uma nova leitura RFID",
+            Description = "Adiciona uma nova leitura RFID ao sistema."
+        )]
         public async Task<IActionResult> Create([FromBody] LeituraRfidRequest request)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -62,6 +79,10 @@ namespace MottuFind.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [SwaggerOperation(
+            Summary = "Atualiza uma leitura RFID existente",
+            Description = "Atualiza os detalhes de uma leitura RFID específica."
+        )]
         public async Task<IActionResult> Update(int id, [FromBody] LeituraRfidRequest request)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -75,6 +96,10 @@ namespace MottuFind.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [SwaggerOperation(
+            Summary = "Remove uma leitura RFID",
+            Description = "Remove uma leitura RFID específica com base no ID fornecido."
+        )]
         public async Task<IActionResult> Delete(int id)
         {
             var deleted = await _leituraService.Remover(id);
