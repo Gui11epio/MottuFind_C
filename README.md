@@ -147,7 +147,7 @@ Com o objetivo de deixar a aplicação mais organizada e destribuir as responsab
   "setores": "MECANICA",
   "nomeUsuario": "Roberto",
   "email": "roberto@gmail.com",
-  "senha": "rob123@!"
+  "senha": "roB123@!"
 }
 ```
 🔤 Setores deve conter:
@@ -171,12 +171,12 @@ Com o objetivo de deixar a aplicação mais organizada e destribuir as responsab
 - LeituraRFID
 ```bash
 {
-  {
+  
   "dataHora": "2025-01-15T14:30:00",
   "leitorId": 1,
   "tagRfidId": 1
 }
-}
+
 ```
 
 
