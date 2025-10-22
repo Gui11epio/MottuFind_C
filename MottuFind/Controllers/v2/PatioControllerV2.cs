@@ -4,54 +4,55 @@ using MottuFind_C_.Domain.Entities;
 using Sprint1_C_.Application.DTOs.Requests;
 using Sprint1_C_.Application.DTOs.Response;
 using Sprint1_C_.Application.Services;
+using Sprint1_C_.Domain.Entities;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Sprint1_C_.Controllers
 {
     [ApiController]
-    [ApiVersion("1.0")]
-    [Route("api/[controller]")]
+    [ApiVersion("2.0")]
+    [Route("api/v{version:apiversion}/[controller]")]
     [SwaggerTag("Gerencia operações relacionadas às filiais.")]
-    public class FilialController : ControllerBase
+    public class PatioControllerV2 : ControllerBase
     {
-        private readonly FilialService _filialService;
+        private readonly PatioService _patioService;
 
-        public FilialController(FilialService service)
+        public PatioControllerV2(PatioService service)
         {
-            _filialService = service;
+            _patioService = service;
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<FilialResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<PatioResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [SwaggerOperation(
-            Summary = "Obtém todas as filiais",
-            Description = "Retorna uma lista de todas as filiais cadastradas."
+            Summary = "Obtém todos os pátios",
+            Description = "Retorna uma lista de todos os pátios cadastrados."
         )]
         public async Task<IActionResult> GetAll()
         {
-            var filiais = await _filialService.ObterTodos();
-            if (filiais == null || !filiais.Any()) return NoContent();
-            return Ok(filiais);
+            var patios = await _patioService.ObterTodos();
+            if (patios == null || !patios.Any()) return NoContent();
+            return Ok(patios);
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(Resource<FilialResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Resource<PatioResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [SwaggerOperation(
-            Summary = "Obtém uma filial por ID",
-            Description = "Retorna os detalhes de uma filial específica com links HATEOAS para ações relacionadas."
+            Summary = "Obtém um pátio por ID",
+            Description = "Retorna os detalhes de um pátio específico com links HATEOAS para ações relacionadas."
         )]
         public async Task<IActionResult> GetById(int id)
         {
-            var filial = await _filialService.ObterPorId(id);
-            if (filial == null) return NotFound();
+            var patio = await _patioService.ObterPorId(id);
+            if (patio == null) return NotFound();
 
 
-            var resource = new Resource<FilialResponse>
+            var resource = new Resource<PatioResponse>
             {
-                Data = filial,
+                Data = patio,
                 Links =
         {
                     new Link { Href = Url.Action(nameof(GetById), new { id }), Rel = "self", Method = "GET" },
@@ -61,24 +62,24 @@ namespace Sprint1_C_.Controllers
         }
             };
 
-
             return Ok(resource);
         }
 
         [HttpGet("pagina")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(Resource<PagedResult<FilialResponse>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Resource<PagedResult<PatioResponse>>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [SwaggerOperation(
-            Summary = "Obtém uma lista paginada de filiais",
-            Description = "Retorna uma lista paginada de filiais com links HATEOAS para navegação entre páginas."
+            Summary = "Obtém pátios paginados",
+            Description = "Retorna uma lista paginada de pátios com links HATEOAS para navegação entre páginas."
         )]
-        public async Task<ActionResult<Resource<PagedResult<FilialResponse>>>> GetPaged(int numeroPag = 1, int tamanhoPag = 10)
+        public async Task<ActionResult<Resource<PagedResult<PatioResponse>>>> GetPaged(int numeroPag = 1, int tamanhoPag = 10)
         {
-            var result = await _filialService.ObterPorPagina(numeroPag, tamanhoPag);
-            if (result.Itens == null || !result.Itens.Any()) return NoContent();
+            var result = await _patioService.ObterPorPagina(numeroPag, tamanhoPag);
+            if (result == null || !result.Itens.Any()) return NoContent();
 
-            var resource = new Resource<PagedResult<FilialResponse>>
+
+            var resource = new Resource<PagedResult<PatioResponse>>
             {
                 Data = result,
                 Links =
@@ -103,21 +104,22 @@ namespace Sprint1_C_.Controllers
                     Rel = "prev",
                     Method = "GET"
                 });
+
             return Ok(resource);
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(FilialResponse), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(PatioResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [SwaggerOperation(
-            Summary = "Cria uma nova filial",
-            Description = "Adiciona uma nova filial ao sistema e retorna os detalhes da filial criada."
+            Summary = "Cria um novo pátio",
+            Description = "Cadastra um novo pátio no sistema."
         )]
-        public async Task<IActionResult> Create([FromBody] FilialRequest request)
+        public async Task<IActionResult> Create([FromBody] PatioRequest request)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var created = await _filialService.Criar(request);
+            var created = await _patioService.Criar(request);
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
@@ -126,16 +128,15 @@ namespace Sprint1_C_.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [SwaggerOperation(
-            Summary = "Atualiza uma filial existente",
-            Description = "Atualiza os detalhes de uma filial existente com base no ID fornecido."
+            Summary = "Atualiza um pátio existente",
+            Description = "Atualiza os detalhes de um pátio específico."
         )]
-        public async Task<IActionResult> Update(int id, [FromBody] FilialRequest request)
+        public async Task<IActionResult> Update(int id, [FromBody] PatioRequest request)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var updated = await _filialService.Atualizar(id, request);
+            var updated = await _patioService.Atualizar(id, request);
             if (!updated) return NotFound();
-
             return NoContent();
         }
 
@@ -143,14 +144,13 @@ namespace Sprint1_C_.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [SwaggerOperation(
-            Summary = "Remove uma filial",
-            Description = "Remove uma filial existente com base no ID fornecido."
+            Summary = "Remove um pátio existente",
+            Description = "Remove um pátio específico do sistema."
         )]
         public async Task<IActionResult> Delete(int id)
         {
-            var deleted = await _filialService.Remover(id);
+            var deleted = await _patioService.Remover(id);
             if (!deleted) return NotFound();
-
             return NoContent();
         }
     }

@@ -9,14 +9,14 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace Sprint1_C_.Controllers
 {
     [ApiController]
-    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     [Route("api/[controller]")]
     [SwaggerTag("Gerencia operações relacionadas às filiais.")]
-    public class FilialController : ControllerBase
+    public class FilialControllerV2 : ControllerBase
     {
         private readonly FilialService _filialService;
 
-        public FilialController(FilialService service)
+        public FilialControllerV2(FilialService service)
         {
             _filialService = service;
         }

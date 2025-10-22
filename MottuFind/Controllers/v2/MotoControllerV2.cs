@@ -10,14 +10,14 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace Sprint1_C_.Controllers
 {
     [ApiController]
-    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     [Route("api/v{version:apiversion}/[controller]")]
     [SwaggerTag("Gerencia operações relacionadas às motos.")]
-    public class MotoController : ControllerBase
+    public class MotoControllerV2 : ControllerBase
     {
         private readonly MotoService _motoService;
 
-        public MotoController(MotoService motoService)
+        public MotoControllerV2(MotoService motoService)
         {
             _motoService = motoService;
         }

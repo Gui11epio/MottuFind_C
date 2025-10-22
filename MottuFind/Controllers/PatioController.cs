@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Mvc;
 using MottuFind_C_.Domain.Entities;
 using Sprint1_C_.Application.DTOs.Requests;
 using Sprint1_C_.Application.DTOs.Response;
@@ -9,7 +10,9 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace Sprint1_C_.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiversion}/[controller]")]
+    [SwaggerTag("Gerencia operações relacionadas às filiais.")]
     public class PatioController : ControllerBase
     {
         private readonly PatioService _patioService;
