@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MottuFind_C_.API", "MottuFi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{87BC786C-1D51-4530-AD92-382AA2BB8C55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MottuFind_C_.API.Tests", "MottuFind_C_.API.Tests\MottuFind_C_.API.Tests.csproj", "{CA7913D0-D3C3-4012-A611-51C31F32CAF0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MottuFind_C_.Tests", "MottuFind_C_.API.Tests\MottuFind_C_.Tests.csproj", "{CA7913D0-D3C3-4012-A611-51C31F32CAF0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
