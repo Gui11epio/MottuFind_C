@@ -1,10 +1,13 @@
 
+using System.Text;
 using System.Text.Json.Serialization;
 using Asp.Versioning;
 using HealthChecks.Oracle;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.IdentityModel.Tokens;
 using MottuFind.Extensions;
 using MottuFind_C_.Application.Services;
 using MottuFind_C_.Domain.Repositories;
@@ -28,9 +31,37 @@ namespace Sprint1_C_
             builder.Services.AddControllers();
 
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen(o =>
-                o.EnableAnnotations()
-            );
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.EnableAnnotations();
+
+                // 🔐 Adiciona suporte ao botão "Authorize" com JWT
+                c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                    Description = "Insira o token JWT no formato: Bearer {seu token}"
+                });
+
+                c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    {
+        {
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                {
+                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+            });
+
 
             builder.Services.AddDbContext<AppDbContext>(options =>
             {
@@ -58,6 +89,26 @@ namespace Sprint1_C_
 
             builder.Services.AddScoped<ILeituraRfidRepository, LeituraRfidRepository>();
             builder.Services.AddScoped<LeituraRfidService>();
+
+            builder.Services.AddScoped<AuthService>();
+
+            // Configuração do JWT
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                        ValidAudience = builder.Configuration["Jwt:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+                    };
+                });
+
+            builder.Services.AddAuthorization();
 
 
             builder.Services.AddAutoMapper(typeof(MappingProfile));
@@ -107,11 +158,12 @@ namespace Sprint1_C_
 
             app.UseHttpsRedirection();
 
+            app.UseRouting();
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
-
-            app.UseRouting();
 
             // ENDPOINTS DE HEALTH CHECK
             app.MapHealthChecks("/health", new HealthCheckOptions()

@@ -47,6 +47,9 @@ public class UsuarioService
     public async Task<UsuarioResponse> Criar(UsuarioRequest request)
     {
         var novoUsuario = _mapper.Map<Usuario>(request);
+
+        novoUsuario.Senha = BCrypt.Net.BCrypt.HashPassword(request.Senha);
+
         await _repo.CriarAsync(novoUsuario);
         return _mapper.Map<UsuarioResponse>(novoUsuario);
     }

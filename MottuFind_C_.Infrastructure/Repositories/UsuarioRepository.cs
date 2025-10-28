@@ -29,6 +29,11 @@ namespace MottuFind_C_.Infrastructure.Repositories
             return await _context.Usuario.FindAsync(id);
         }
 
+        public async Task<Usuario?> ObterPorEmailAsync(string email)
+        {
+            return await _context.Usuario.FirstOrDefaultAsync(u => u.Email == email);
+        }
+
         public async Task<(List<Usuario> Itens, int Total)> ObterPorPaginaAsync(int numeroPag, int tamanhoPag)
         {
             var query = _context.Usuario.AsQueryable();

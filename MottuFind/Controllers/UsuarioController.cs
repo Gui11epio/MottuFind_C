@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Mvc;
 using Sprint1_C_.Application.DTOs.Requests;
 using Sprint1_C_.Application.DTOs.Response;
 using Sprint1_C_.Application.Services;
@@ -7,7 +8,9 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace Sprint1_C_.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiversion}/[controller]")]
+    [SwaggerTag("Gerencia operações relacionadas aos usuários.")]
     public class UsuarioController : ControllerBase
     {
         private readonly UsuarioService _usuarioService;

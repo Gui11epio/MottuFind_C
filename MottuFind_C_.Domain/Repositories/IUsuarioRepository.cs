@@ -11,6 +11,7 @@ namespace MottuFind_C_.Domain.Repositories
     {
         Task<List<Usuario>> ObterTodosAsync();
         Task<Usuario?> ObterPorIdAsync(int id);
+        Task<Usuario?> ObterPorEmailAsync(string email);
         Task<(List<Usuario> Itens, int Total)> ObterPorPaginaAsync(int numeroPag, int tamanhoPag);
         Task<Usuario> CriarAsync(Usuario usuario);
         Task<bool> AtualizarAsync(Usuario usuario);

@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MottuFind_C_.Domain.Entities;
 using Sprint1_C_.Application.DTOs.Requests;
@@ -10,7 +11,7 @@ namespace Sprint1_C_.Controllers
 {
     [ApiController]
     [ApiVersion("1.0")]
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiversion}/[controller]")]
     [SwaggerTag("Gerencia operações relacionadas às filiais.")]
     public class FilialController : ControllerBase
     {
@@ -21,6 +22,8 @@ namespace Sprint1_C_.Controllers
             _filialService = service;
         }
 
+
+        [Authorize]
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<FilialResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
