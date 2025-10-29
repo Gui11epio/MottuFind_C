@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MottuFind_C_.Domain.Entities;
 using Sprint1_C_.Application.DTOs.Requests;
@@ -22,6 +23,7 @@ namespace Sprint1_C_.Controllers
             _motoService = motoService;
         }
 
+        [Authorize]
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<MotoResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -36,6 +38,7 @@ namespace Sprint1_C_.Controllers
             return Ok(motos);
         }
 
+        [Authorize]
         [HttpGet("placa")]
         [ProducesResponseType(typeof(Resource<MotoResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -65,6 +68,7 @@ namespace Sprint1_C_.Controllers
             return Ok(resource);
         }
 
+        [Authorize]
         [HttpGet("pagina")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(Resource<PagedResult<MotoResponse>>), StatusCodes.Status200OK)]
@@ -107,6 +111,7 @@ namespace Sprint1_C_.Controllers
             return Ok(resource);
         }
 
+        [Authorize]
         [HttpPost]
         [ProducesResponseType(typeof(MotoResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -123,6 +128,7 @@ namespace Sprint1_C_.Controllers
             return CreatedAtAction(nameof(GetByPlaca), new { valor = motoCriada.Placa }, motoCriada);
         }
 
+        [Authorize]
         [HttpPut("placa")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -143,6 +149,7 @@ namespace Sprint1_C_.Controllers
             return NoContent();
         }
 
+        [Authorize]
         [HttpDelete("placa")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MottuFind_C_.Application.Services;
 using Sprint1_C_.Application.DTOs.Requests;
 using Sprint1_C_.Application.DTOs.Response;
@@ -17,6 +18,7 @@ namespace MottuFind.Controllers
             _leitorService = service;
         }
 
+        [Authorize]
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<LeitorRfidResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -31,6 +33,7 @@ namespace MottuFind.Controllers
             return Ok(leitors);
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(LeitorRfidResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -46,6 +49,7 @@ namespace MottuFind.Controllers
             return Ok(leitor);
         }
 
+        [Authorize]
         [HttpGet("pagina")]
         [ProducesResponseType(typeof(PagedResult<LeitorRfidResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -59,6 +63,7 @@ namespace MottuFind.Controllers
             return Ok(result);
         }
 
+        [Authorize]
         [HttpPost]
         [ProducesResponseType(typeof(LeitorRfidResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -74,6 +79,7 @@ namespace MottuFind.Controllers
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -92,6 +98,7 @@ namespace MottuFind.Controllers
             return NoContent();
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

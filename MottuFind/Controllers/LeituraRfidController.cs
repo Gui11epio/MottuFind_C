@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MottuFind_C_.Application.Services;
 using Sprint1_C_.Application.DTOs.Requests;
 using Sprint1_C_.Application.DTOs.Response;
@@ -18,6 +19,7 @@ namespace MottuFind.Controllers
             _leituraService = service;
         }
 
+        [Authorize]
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<LeituraRfidResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -32,6 +34,7 @@ namespace MottuFind.Controllers
             return Ok(leituras);
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(LeituraRfidResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -47,6 +50,7 @@ namespace MottuFind.Controllers
             return Ok(leitura);
         }
 
+        [Authorize]
         [HttpGet("pagina")]
         [ProducesResponseType(typeof(PagedResult<LeituraRfidResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -60,6 +64,7 @@ namespace MottuFind.Controllers
             return Ok(result);
         }
 
+        [Authorize]
         [HttpPost]
         [ProducesResponseType(typeof(LeituraRfidResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -75,6 +80,7 @@ namespace MottuFind.Controllers
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -93,6 +99,7 @@ namespace MottuFind.Controllers
             return NoContent();
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

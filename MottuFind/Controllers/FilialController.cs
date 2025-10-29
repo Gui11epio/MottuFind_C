@@ -38,6 +38,7 @@ namespace Sprint1_C_.Controllers
             return Ok(filiais);
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Resource<FilialResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -68,6 +69,7 @@ namespace Sprint1_C_.Controllers
             return Ok(resource);
         }
 
+        [Authorize]
         [HttpGet("pagina")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(Resource<PagedResult<FilialResponse>>), StatusCodes.Status200OK)]
@@ -109,6 +111,7 @@ namespace Sprint1_C_.Controllers
             return Ok(resource);
         }
 
+        [Authorize]
         [HttpPost]
         [ProducesResponseType(typeof(FilialResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -124,6 +127,7 @@ namespace Sprint1_C_.Controllers
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -142,6 +146,7 @@ namespace Sprint1_C_.Controllers
             return NoContent();
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
