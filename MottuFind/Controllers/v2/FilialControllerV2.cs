@@ -10,7 +10,7 @@ namespace Sprint1_C_.Controllers
 {
     [ApiController]
     [ApiVersion("2.0")]
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiversion}/[controller]")]
     [SwaggerTag("Gerencia operações relacionadas às filiais.")]
     public class FilialControllerV2 : ControllerBase
     {

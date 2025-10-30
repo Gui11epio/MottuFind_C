@@ -1,4 +1,3 @@
-
 using System.Text;
 using System.Text.Json.Serialization;
 using Asp.Versioning;
@@ -26,16 +25,29 @@ namespace Sprint1_C_
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            
-
             builder.Services.AddControllers();
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
             {
+                
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Title = "MottuFind_C_.API",
+                    Version = "v1",
+                    Description = "Documentação da versão 1 da API."
+                });
+
+                c.SwaggerDoc("v2", new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Title = "MottuFind_C_.API",
+                    Version = "v2",
+                    Description = "Documentação da versão 2 da API."
+                });
+
                 c.EnableAnnotations();
 
-                // 🔐 Adiciona suporte ao botão "Authorize" com JWT
+                
                 c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
                 {
                     Name = "Authorization",
@@ -47,31 +59,32 @@ namespace Sprint1_C_
                 });
 
                 c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
-    {
-        {
-            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
-            {
-                Reference = new Microsoft.OpenApi.Models.OpenApiReference
                 {
-                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            new string[] {}
-        }
-    });
+                    {
+                        new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                        {
+                            Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                            {
+                                Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] {}
+                    }
+                });
             });
 
-
+            
             builder.Services.AddDbContext<AppDbContext>(options =>
             {
                 var connectionString = Environment.GetEnvironmentVariable("DEFAULT_CONNECTION");
                 if (string.IsNullOrWhiteSpace(connectionString))
-                    throw new Exception("A vari�vel de ambiente DEFAULT_CONNECTION n�o est� definida.");
+                    throw new Exception("A variável de ambiente DEFAULT_CONNECTION não está definida.");
 
                 options.UseOracle(connectionString);
             });
 
+            
             builder.Services.AddScoped<IMotoRepository, MotoRepository>();
             builder.Services.AddScoped<MotoService>();
 
@@ -92,7 +105,7 @@ namespace Sprint1_C_
 
             builder.Services.AddScoped<AuthService>();
 
-            // Configuração do JWT
+            
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -110,14 +123,15 @@ namespace Sprint1_C_
 
             builder.Services.AddAuthorization();
 
-
             builder.Services.AddAutoMapper(typeof(MappingProfile));
 
             builder.Services.AddControllers()
-                .AddJsonOptions(opt => {
-                                opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                .AddJsonOptions(opt =>
+                {
+                    opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 });
 
+            
             builder.Services.AddApiVersioning(options =>
             {
                 options.DefaultApiVersion = new ApiVersion(1, 0);
@@ -130,7 +144,7 @@ namespace Sprint1_C_
                 options.SubstituteApiVersionInUrl = true;
             });
 
-            // HEALTH CHECKS SIMPLIFICADO
+            
             builder.Services.AddHealthChecks()
                 .AddCheck<ApplicationHealthCheck>(
                     "Application",
@@ -145,6 +159,7 @@ namespace Sprint1_C_
 
             var app = builder.Build();
 
+            
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -152,12 +167,10 @@ namespace Sprint1_C_
                 {
                     ui.SwaggerEndpoint("/swagger/v1/swagger.json", "MottuFind_C_.API v1");
                     ui.SwaggerEndpoint("/swagger/v2/swagger.json", "MottuFind_C_.API v2");
-                }
-                );
+                });
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
 
             app.UseAuthentication();
@@ -165,20 +178,20 @@ namespace Sprint1_C_
 
             app.MapControllers();
 
-            // ENDPOINTS DE HEALTH CHECK
+            
             app.MapHealthChecks("/health", new HealthCheckOptions()
             {
                 ResponseWriter = HealthCheckExtensions.WriteResponse,
                 Predicate = check => check.Tags.Contains("application") ||
-                                   check.Tags.Contains("database") ||
-                                   check.Tags.Contains("external")
+                                     check.Tags.Contains("database") ||
+                                     check.Tags.Contains("external")
             });
 
             app.MapHealthChecks("/health/ready", new HealthCheckOptions()
             {
                 ResponseWriter = HealthCheckExtensions.WriteResponse,
                 Predicate = check => check.Tags.Contains("database") ||
-                                   check.Tags.Contains("external")
+                                     check.Tags.Contains("external")
             });
 
             app.MapHealthChecks("/health/live", new HealthCheckOptions()
