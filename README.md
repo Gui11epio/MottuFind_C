@@ -1,4 +1,4 @@
-# Sprint 3
+# Sprint 4
 
 ### 👥 Nome e RM dos Integrantes
 
@@ -156,6 +156,17 @@ Com o objetivo de deixar a aplicação mais organizada e destribuir as responsab
 
 
 #
+
+- Login(Auth)
+```bash
+{
+  "email": "roberto@gmail.com",
+  "senha": "roB123@!"
+}
+````
+
+#
+
 
 - LeitorRFID
 ```bash
