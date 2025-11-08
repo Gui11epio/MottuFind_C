@@ -43,6 +43,10 @@ Com o objetivo de deixar a aplicação mais organizada e destribuir as responsab
 
 > Os outros controllers (`FilialController`, `PatioController`, `UsuarioController`, `LeitorRFIDController` e `LeituraRFIDController`) seguem estrutura semelhante com operações básicas de CRUD.
 
+### Rota dos Health Checks
+
+
+
 ## 🛠️ Tecnologias Utilizadas
 
 - [.NET 6 / ASP.NET Core](https://dotnet.microsoft.com/)
@@ -56,6 +60,10 @@ Com o objetivo de deixar a aplicação mais organizada e destribuir as responsab
 - DataAnnotations
 - Pagination
 - HATEOAS
+- JWT
+- Health Check
+- xUnit
+- Versionamento de API
 
 ## ▶️ Instruções de Execução
 
@@ -95,8 +103,23 @@ Com o objetivo de deixar a aplicação mais organizada e destribuir as responsab
    ```bash
    https://localhost:7117/swagger
 
+8. **Para rodar os Testes unitários**
 
-## 📬JSON de Teste
+   - Vá até a camada de testes
+     
+   <img width="371" height="73" alt="image" src="https://github.com/user-attachments/assets/72405f62-3a5a-4976-a53c-8d91c77e2fc6" />
+
+
+   - Clique com o botão direito em cima da camada e clique no executar testes
+     
+     <img width="634" height="38" alt="image" src="https://github.com/user-attachments/assets/f2663387-c1f8-4444-8a66-91b501bb72cc" />
+
+
+   - Vai ir para uma tela onde vai rodar os testes
+     
+     <img width="520" height="757" alt="image" src="https://github.com/user-attachments/assets/29dfb0ad-de8d-4589-aea1-b0ead37bc68a" />
+
+## 📬JSON de Teste para o Swagger
 
 - Filial:
   
