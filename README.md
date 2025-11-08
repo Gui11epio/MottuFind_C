@@ -43,8 +43,15 @@ Com o objetivo de deixar a aplicação mais organizada e destribuir as responsab
 
 > Os outros controllers (`FilialController`, `PatioController`, `UsuarioController`, `LeitorRFIDController` e `LeituraRFIDController`) seguem estrutura semelhante com operações básicas de CRUD.
 
-### Rota dos Health Checks
+## 🚀 Rota dos Health Checks
+- `/health`
+  Vai mostrar o estado de tudo
 
+- `/health/ready`
+  Vai mostrar o estado do Banco de Dados apenas
+
+- `/health/live`
+  Vai mostrar o estado da Aplicação apenas
 
 
 ## 🛠️ Tecnologias Utilizadas
@@ -118,6 +125,10 @@ Com o objetivo de deixar a aplicação mais organizada e destribuir as responsab
    - Vai ir para uma tela onde vai rodar os testes
      
      <img width="520" height="757" alt="image" src="https://github.com/user-attachments/assets/29dfb0ad-de8d-4589-aea1-b0ead37bc68a" />
+
+  9. **Authorization Bearer**
+
+      - É preciso fazer a autentificação para poder usar as rotas. Menos a de usuário que funciona sem, já que vai usar o usuario para fazer o /Auth
 
 ## 📬JSON de Teste para o Swagger
 
